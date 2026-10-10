@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Career Workbench 本地系统架构",
+    "subtitle": "人工门禁 G0/G1/G2/G3 · 永不自动投递",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "career-architecture.html",
+    "legend": {
+      "mode": "auto"
+    }
+  },
+  "components": [
+    {
+      "id": "owner",
+      "type": "external",
+      "label": "Owner（求职者）",
+      "sublabel": "人工确认每个门禁",
+      "icon": "person",
+      "pos": [
+        40,
+        210
+      ],
+      "size": [
+        150,
+        70
+      ]
+    },
+    {
+      "id": "host",
+      "type": "backend",
+      "label": "DSH Web Host",
+      "sublabel": "dsh 0.1.7-rc.1 + 本地补丁",
+      "pos": [
+        270,
+        60
+      ],
+      "size": [
+        170,
+        70
+      ],
+      "tag": "127.0.0.1:18380"
+    },
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "Workbench UI",
+      "sublabel": "DSH Web UI slots + client.js",
+      "pos": [
+        276,
+        210
+      ],
+      "size": [
+        160,
+        70
+      ]
+    },
+    {
+      "id": "plugin",
+      "type": "security",
+      "label": "career-v0-web-plugin",
+      "sublabel": "认证路由 /api/career-v0",
+      "pos": [
+        509,
+        210
+      ],
+      "size": [
+        180,
+        70
+      ],
+      "tag": "进程级 Owner 秘钥"
+    },
+    {
+      "id": "bridge",
+      "type": "backend",
+      "label": "Career Bridge",
+      "sublabel": "Python stdin JSON 桥",
+      "pos": [
+        775,
+        210
+      ],
+      "size": [
+        150,
+        70
+      ]
+    },
+    {
+      "id": "service",
+      "type": "backend",
+      "label": "CareerService",
+      "sublabel": "career_v0 门禁状态机",
+      "pos": [
+        998,
+        210
+      ],
+      "size": [
+        160,
+        70
+      ]
+    },
+    {
+      "id": "store",
+      "type": "database",
+      "label": "Career 状态库",
+      "sublabel": "JSON + XLSX/PDF 产物",
+      "pos": [
+        1231,
+        210
+      ],
+      "size": [
+        160,
+        70
+      ]
+    },
+    {
+      "id": "renderer",
+      "type": "backend",
+      "label": "简历渲染器",
+      "sublabel": "Playwright Chromium",
+      "pos": [
+        998,
+        380
+      ],
+      "size": [
+        160,
+        70
+      ],
+      "tag": "2 页 A4 + DOM QA"
+    },
+    {
+      "id": "master",
+      "type": "external",
+      "label": "Master 简历",
+      "sublabel": "只读输入",
+      "pos": [
+        998,
+        60
+      ],
+      "size": [
+        160,
+        70
+      ]
+    },
+    {
+      "id": "recruit",
+      "type": "external",
+      "label": "招聘网站",
+      "sublabel": "web_search / web_fetch",
+      "pos": [
+        40,
+        60
+      ],
+      "size": [
+        150,
+        70
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Career Workbench（本机）",
+      "wraps": [
+        "host",
+        "ui",
+        "plugin",
+        "bridge",
+        "service",
+        "store",
+        "renderer"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "owner-ui",
+      "from": "owner",
+      "to": "ui",
+      "label": "token 认证",
+      "variant": "emphasis"
+    },
+    {
+      "id": "host-ui",
+      "from": "host",
+      "to": "ui",
+      "label": "托管页面",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "host-recruit",
+      "from": "host",
+      "to": "recruit",
+      "label": "搜索/抓取",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "ui-plugin",
+      "from": "ui",
+      "to": "plugin",
+      "label": "动作路由"
+    },
+    {
+      "id": "plugin-bridge",
+      "from": "plugin",
+      "to": "bridge",
+      "label": "spawn·秘钥",
+      "variant": "security"
+    },
+    {
+      "id": "bridge-service",
+      "from": "bridge",
+      "to": "service",
+      "label": "操作分发"
+    },
+    {
+      "id": "service-store",
+      "from": "service",
+      "to": "store",
+      "label": "读写状态"
+    },
+    {
+      "id": "service-renderer",
+      "from": "service",
+      "to": "renderer",
+      "label": "渲染+QA",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "service-master",
+      "from": "service",
+      "to": "master",
+      "label": "只读引用",
+      "fromSide": "top",
+      "toSide": "bottom"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "信任边界",
+      "items": [
+        "浏览器永远不提供 actor_channel；Owner 秘钥由 Host 进程创建后仅传给 bridge 子进程",
+        "模型伪造 OWNER_UI 审批无法通过 bridge 校验"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "人工门禁",
+      "items": [
+        "G0 偏好确认 / G1 岗位选定 / G2 计划批准 / G3 视觉批准",
+        "Agent 链止于草稿与 handoff 压缩包；投递永远人工"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "运行事实",
+      "items": [
+        "内核为 0.1.7-rc.1 + career-localpatch.1（5 处 resolve.paths 守卫）",
+        "browser 插件在 0.1.7 未激活，Career 走独立 headless 搜索/抓取桥"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,251 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Career Workbench 黄金旅程",
+    "subtitle": "一次真实端到端运行（2026-09-29）· 无 fixture/mock",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "career-golden-journey.html",
+    "viewBox": [
+      1011,
+      652
+    ]
+  },
+  "lanes": [
+    {
+      "id": "owner",
+      "label": "Owner 人工动作"
+    },
+    {
+      "id": "discovery",
+      "label": "发现与筛选"
+    },
+    {
+      "id": "planning",
+      "label": "研究与计划"
+    },
+    {
+      "id": "delivery",
+      "label": "简历与交付"
+    }
+  ],
+  "phases": [
+    {
+      "id": "discover",
+      "label": "发现",
+      "fromCol": 1,
+      "toCol": 2
+    },
+    {
+      "id": "plan",
+      "label": "计划",
+      "fromCol": 3,
+      "toCol": 3,
+      "variant": "emphasis"
+    },
+    {
+      "id": "deliver",
+      "label": "交付",
+      "fromCol": 4,
+      "toCol": 5,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "g0",
+    "search",
+    "normalize",
+    "g1",
+    "plan",
+    "g2",
+    "render",
+    "g3",
+    "handoff"
+  ],
+  "semanticChecks": {
+    "allowedRoots": [
+      "g0"
+    ],
+    "allowedTerminals": [
+      "handoff"
+    ],
+    "requiredPaths": [
+      {
+        "from": "g0",
+        "to": "handoff"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "g0",
+      "lane": "owner",
+      "col": 0,
+      "type": "security",
+      "label": "G0 偏好确认",
+      "sublabel": "偏好 + 保护信号",
+      "tag": "人工门禁",
+      "height": 52
+    },
+    {
+      "id": "search",
+      "lane": "discovery",
+      "col": 1,
+      "type": "backend",
+      "label": "搜索岗位线索",
+      "sublabel": "web_search · 51",
+      "height": 52
+    },
+    {
+      "id": "normalize",
+      "lane": "discovery",
+      "col": 2,
+      "type": "backend",
+      "label": "抓取 + 归一化",
+      "sublabel": "16 条 · 2/8/6",
+      "height": 52
+    },
+    {
+      "id": "g1",
+      "lane": "owner",
+      "col": 3,
+      "type": "security",
+      "label": "G1 选定岗位",
+      "sublabel": "XLSX 往返",
+      "tag": "人工门禁",
+      "height": 52
+    },
+    {
+      "id": "plan",
+      "lane": "planning",
+      "col": 3,
+      "type": "backend",
+      "label": "研究·裁剪计划",
+      "sublabel": "引用 + 哈希",
+      "height": 52
+    },
+    {
+      "id": "g2",
+      "lane": "owner",
+      "col": 4,
+      "type": "security",
+      "label": "G2 计划批准",
+      "sublabel": "预览后确认",
+      "tag": "人工门禁",
+      "height": 52
+    },
+    {
+      "id": "render",
+      "lane": "delivery",
+      "col": 4,
+      "type": "backend",
+      "label": "渲染简历 PDF",
+      "sublabel": "A4 + DOM QA",
+      "height": 52
+    },
+    {
+      "id": "g3",
+      "lane": "owner",
+      "col": 5,
+      "type": "security",
+      "label": "G3 视觉批准",
+      "sublabel": "逐页 + 哈希",
+      "tag": "人工门禁",
+      "height": 52
+    },
+    {
+      "id": "handoff",
+      "lane": "delivery",
+      "col": 5,
+      "type": "backend",
+      "label": "Handoff 压缩包",
+      "sublabel": "8/8 · 278KB",
+      "height": 52
+    }
+  ],
+  "edges": [
+    {
+      "from": "g0",
+      "to": "search",
+      "variant": "emphasis"
+    },
+    {
+      "from": "search",
+      "to": "normalize",
+      "label": "真实抓取"
+    },
+    {
+      "from": "normalize",
+      "to": "g1",
+      "label": "候选批次",
+      "variant": "emphasis"
+    },
+    {
+      "from": "g1",
+      "to": "plan"
+    },
+    {
+      "from": "plan",
+      "to": "g2",
+      "label": "rev1→rev2"
+    },
+    {
+      "from": "g2",
+      "to": "render",
+      "variant": "security"
+    },
+    {
+      "from": "render",
+      "to": "g3",
+      "label": "PDF 逐页"
+    },
+    {
+      "from": "g3",
+      "to": "handoff",
+      "variant": "emphasis"
+    },
+    {
+      "from": "g2",
+      "to": "plan",
+      "label": "REQUEST_CHANGES",
+      "role": "return"
+    },
+    {
+      "from": "render",
+      "to": "plan",
+      "label": "QA 失败·回修订",
+      "role": "error"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "归一化三池",
+      "items": [
+        "搜索结果只算线索，绝不自动计为合格岗位",
+        "qualified / unknown / excluded 由后端规则分类",
+        "未标注截止的校招帖不再强制进 unknown 池（2026-09-28 Owner 放宽）"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "证据纪律",
+      "items": [
+        "公司档案按公司精确身份在同一战役内复用",
+        "计划与简历内容绑定逐字引用与输入哈希",
+        "G2 用计划 XLSX 独立预览后确认；PDF 本身不触发渲染"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "红线",
+      "items": [
+        "渲染 QA 失败回到计划修订，从不悄悄删内容",
+        "工作台链路止于 handoff；投递永远人工",
+        "四个门禁全部留 Owner 动作记录",
+        "Handoff 之后由 Owner 在工作台之外亲自完成投递"
+      ]
+    }
+  ]
+}

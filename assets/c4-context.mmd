@@ -1,0 +1,11 @@
+C4Context
+  title Career Workbench - System Context (L1)
+
+  Person(owner, "Owner (Job Seeker)", "Confirms every gate G0/G1/G2/G3; reviews plans, PDFs, handoff; the only person who can submit an application")
+
+  System(career, "Career Workbench", "Local human-gated workbench that turns campaign preferences into vetted application packages: discovery, tailoring plan, QA'd resume PDF, handoff zip")
+
+  System_Ext(recruit, "Recruitment Web Sources", "Public job postings and company pages reached through DSH web_search / web_fetch")
+
+  Rel(owner, career, "Answers gates, reviews intermediates, downloads handoff", "Browser over localhost HTTP with one-time token")
+  Rel(career, recruit, "Searches leads and fetches posting pages", "DSH web_search / web_fetch (HTTPS)")

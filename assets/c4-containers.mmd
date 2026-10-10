@@ -1,0 +1,26 @@
+C4Container
+  title Career Workbench - Container Diagram (L2)
+
+  Person(owner, "Owner (Job Seeker)", "Human gate for G0/G1/G2/G3")
+
+  Container_Boundary(career, "Career Workbench (local machine)") {
+    Container(ui, "Workbench UI", "DSH Web UI slots + career client.js", "Career page: G0 form, batch tables, plan review, PDF page preview")
+    Container(host, "DSH Web Host", "dsh 0.1.7-rc.1 + career-localpatch.1 (Node.js)", "Serves UI and API on 127.0.0.1:18380; runs headless web_search / web_fetch")
+    Container(plugin, "career-v0-web-plugin", "Node.js DSH host plugin", "Authenticated /api/career-v0 routes; creates per-process owner secret; owns temp uploads")
+    Container(bridge, "Career Bridge", "Python (career_v0.bridge)", "JSON-over-stdin child process; rejects owner claims not signed by the host secret")
+    Container(service, "CareerService", "Python (career_v0 package)", "G0-G3 gate state machine, normalization pools, plan binding, resume content, mechanical QA")
+    ContainerDb(store, "Career State Store", "JSON files + XLSX/PDF artifacts", "campaigns, discoveries, batches, plans, decisions, resume artifacts, handoffs")
+    Container(renderer, "Resume Renderer", "Node.js + Playwright Chromium", "Resume HTML to 2-page A4 PDF plus DOM checks (page count, heroes, compact lines)")
+  }
+
+  System_Ext(master, "Master Resume", "Owner-authored source resume file, read-only input")
+  System_Ext(recruit, "Recruitment Web Sources", "Job postings and company pages")
+
+  Rel(owner, ui, "Uses workbench pages", "HTTPS to localhost with token cookie")
+  Rel(ui, plugin, "Calls action routes", "same-origin fetch /api/career-v0 (JSON, 10 MB XLSX uploads)")
+  Rel(plugin, bridge, "Spawns one child per operation", "stdin/stdout JSON, CAREER_PYTHON")
+  Rel(bridge, service, "Dispatches operation", "in-process import")
+  Rel(service, store, "Reads/writes campaign state and artifacts", "Filesystem")
+  Rel(service, renderer, "Renders candidate PDF and QA", "subprocess (Node)")
+  Rel(service, master, "Reads master resume for grounded content", "read-only file access")
+  Rel(host, recruit, "Runs headless search and fetch", "HTTPS via DSH web_search / web_fetch")

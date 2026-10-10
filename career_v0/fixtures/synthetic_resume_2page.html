@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>合成简历版式样例 - 仅供渲染测试</title>
+  <style>
+    @page { size: A4; margin: 13mm 15mm; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #202b34; font-family: "Microsoft YaHei", "SimSun", sans-serif; font-size: 10.5pt; line-height: 1.36; }
+    h1 { margin: 0 0 2pt; font-size: 19pt; color: #15354b; }
+    h2 { margin: 7pt 0 3pt; padding-bottom: 2pt; border-bottom: 0.7pt solid #628297; font-size: 12pt; color: #204a63; }
+    h3 { margin: 5pt 0 2pt; font-size: 10.8pt; }
+    p { margin: 0 0 3pt; }
+    .contact { font-size: 9pt; color: #45545d; }
+    .bullet { padding-left: 9pt; text-indent: -9pt; }
+    .bullet::before { content: "• "; color: #2d627f; }
+    .page-break { break-before: page; page-break-before: always; }
+  </style>
+</head>
+<body>
+  <h1>示例候选人</h1>
+  <p class="contact">000-0000-0000 ｜ sample@example.invalid ｜ 合成版式样例</p>
+  <p>目标：AI 应用工程岗位。以下公司、成果和数字均为测试占位，不对应真实求职者。</p>
+  <h2>教育背景</h2>
+  <p>示例大学｜计算机相关专业｜2023.09 - 2027.06</p>
+  <h2>实践经历</h2>
+  <p><strong>示例团队｜工程实践｜2026.03 - 2026.06</strong></p>
+  <p class="bullet">梳理虚构的知识处理流程，记录输入、输出、失败样本与人工复核边界。</p>
+  <p class="bullet">采用 Python、API 与队列完成合成数据处理；此句仅用于测试中文换行和 PDF 文本抽取。</p>
+  <h2>项目经历</h2>
+  <h3>HERO 1｜合成 Agent 平台</h3>
+  <p class="bullet">设计多轮工作流、工具调用和人工确认状态，保留事件记录与可追溯输入版本。</p>
+  <p class="bullet">用虚构案例模拟参数化方案、批准门和产物生成门，验证页面内标题与列表顺序。</p>
+  <h3>HERO 2｜合成知识库</h3>
+  <p class="bullet">建立文档解析、检索与引用展示的测试链路，覆盖中文、English、数字 123 和符号 + / -。</p>
+  <p class="bullet">将失败样本分为检索、排序和生成三类；本行只测试较长段落在 A4 页面上的自然折行。</p>
+  <h3>HERO 3｜合成自动化工作流</h3>
+  <p class="bullet">通过状态机表达下载表格、回读选择、复核方案、生成候选 PDF 与再次审阅。</p>
+  <p class="bullet">所有操作对象均为合成数据，不能作为真实项目经历、岗位匹配或事实审计证据。</p>
+  <div class="page-break"></div>
+  <h2>项目经历（续）</h2>
+  <h3>HERO 4｜合成质量看板</h3>
+  <p class="bullet">记录输入哈希、版本、页数、字体、文本抽取和页面图像，形成可复查的版式报告。</p>
+  <p class="bullet">故意保留中英文混排、括号（demo）、冒号：样例，检查字体嵌入与输出阅读顺序。</p>
+  <h3>COMPACT 5｜样例接口网关</h3>
+  <p>用途：聚合测试 API；技术：Python / HTTP / JSON；过程留痕：需求、实现、复核。</p>
+  <h3>COMPACT 6｜样例检索工具</h3>
+  <p>用途：查询合成文档；技术：全文检索 / 向量检索；过程留痕：样例集、错误分析。</p>
+  <h3>COMPACT 7｜样例任务队列</h3>
+  <p>用途：异步处理测试任务；技术：Redis / Worker；过程留痕：重试策略、运行日志。</p>
+  <h3>COMPACT 8｜样例资料库</h3>
+  <p>用途：收集虚构卡片；技术：Markdown / SQLite；过程留痕：索引规则、版本变更。</p>
+  <h2>能力摘要</h2>
+  <p>10+ 平台与 7+ 项目均为本合成样例中的排版测试字串，不是候选人的事实陈述。</p>
+  <p>技术关键词：Python、FastAPI、Agent、RAG、Workflow、React、TypeScript、Docker。</p>
+  <p>此页作为项目地图、长短项目共存和关键字抽取的视觉样例，不承担正式简历验收。</p>
+</body>
+</html>
